@@ -9,6 +9,7 @@ const getSpeakers = {
   conference(id: "graphql-finland-2018") {
     speakers {
       name
+      about
       image {
         url
       }
