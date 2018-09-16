@@ -2,15 +2,12 @@ import React from 'react'
 import { View, ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 import { Fonts } from '../../Themes'
+import { connect } from 'react-redux'
+import { pathOr } from 'ramda'
 
 export const GoldImage = styled.Image`
  height: 50px;
  width: 140;
-`
-export const AlmaImage = styled.Image`
- margin-left: 0px;
- height: 30px;
- width: 75;
 `
 
 export const SilverImage = styled.Image`
@@ -27,11 +24,6 @@ export const BronzeWrapper = styled.View`
  background-color: black;
 `
 
-export const VerkkokauppaImage = styled.Image`
- margin-top: 15px;
- height: 20px;
- width: 150;
-`
 export const BackgroundImage = styled.ImageBackground`
   flex: 1;
   justify-content: space-between;
@@ -46,6 +38,7 @@ export const SponsorContainer = styled.View`
 
 export const Text = styled.Text`
   color: ${props => props.textcolor};
+  padding-top: 20;
   padding-left: 20;
   padding-bottom: 15px;
   padding-right: 30;
@@ -54,28 +47,41 @@ export const Text = styled.Text`
   font-family: ${Fonts.type.base};
 `
 
-class AboutText extends React.Component {
+class SponsorList extends React.Component {
   render () {
     return (
       <BackgroundImage rexizeMode='cover' source={require('../../Images/graphql-background.png')} >
+      <View style={{flex:1, backgroundColor: 'rgba(0,0,0, 0.4)'}}>
         <SponsorContainer>
           <ScrollView>
-            <Text textcolor={'#ffd700'}>Gold</Text>
+            <Text textcolor={'white'}>Gold</Text>
             <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+              { this.props.gold.map((i, index) => 
+                <GoldImage key={index} source={{uri: i.image.url}} />
+              )}
             </View>
-            <Text textcolor='#c0c0c0'>Silver</Text>
+            <Text textcolor='white'>Silver</Text>
             <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+              { this.props.silver.map((i, index) => 
+                <SilverImage key={index} source={{uri: i.image.url}} />
+              )}
             </View>
-            <Text textcolor='#CD7F32' >Bronze</Text>
-            <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-            </View>
-            <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+            <Text textcolor='white' >Bronze</Text>
+            <View style={{justifyContent: 'space-between', flexDirection: 'row', flexWrap: 'wrap'}}>
+              { this.props.bronze.map((i, index) => 
+                <BronzeImage key={index} resizeMode='contain' source={{uri: i.image.url}} />
+              )}
             </View>
           </ScrollView>
         </SponsorContainer>
+        </View>
       </BackgroundImage>
     )
   }
 }
-
-export default AboutText
+const mapStateToProps = ({sponsors}) => ({
+  gold:  pathOr([], ['data', 'goldSponsors'], sponsors),
+  silver:  pathOr([], ['data', 'silverSponsors'], sponsors),
+  bronze:  pathOr([], ['data', 'bronzeSponsors'], sponsors)
+})
+export default connect(mapStateToProps)(SponsorList)

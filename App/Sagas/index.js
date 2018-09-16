@@ -9,6 +9,7 @@ import { StartupTypes } from '../Redux/StartupRedux'
 import { ScheduleTypes } from '../Redux/ScheduleRedux'
 import { OrganizersTypes } from '../Redux/OrganizersRedux'
 import { SpeakersTypes } from '../Redux/SpeakersRedux'
+import { sponsorsTypes } from '../Redux/SponsorsRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -16,7 +17,7 @@ import { startup } from './StartupSagas'
 import { updateSchedule } from './SchedulesSagas'
 import { updateOrganizers } from './OrganizersSagas'
 import { updateSpeakers } from './SpeakersSagas'
-
+import { updateSponsors } from './SponsorsSagas'
 import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import introspectionQueryResultData from './fragmentTypes.json';
 
@@ -38,6 +39,7 @@ export default function * root () {
     takeLatest(StartupTypes.STARTUP, startup),
     takeLatest(ScheduleTypes.SCHEDULE_UPDATE, updateSchedule, client),
     takeLatest(OrganizersTypes.ORGANIZERS_UPDATE, updateOrganizers, client),
+    takeLatest(sponsorsTypes.SPONSORS_UPDATE, updateSponsors, client),
     takeLatest(SpeakersTypes.SPEAKERS_UPDATE, updateSpeakers, client)
   ])
 }

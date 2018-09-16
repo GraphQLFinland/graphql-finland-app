@@ -5,10 +5,12 @@ import { DrawerItems } from 'react-navigation'
 import styled from 'styled-components/native'
 import { Metrics, Fonts } from '../Themes'
 import Icon from 'react-native-vector-icons/FontAwesome'
-
+import { connect } from 'react-redux'
+import { pathOr } from 'ramda'
 const BackgroundImage = styled.ImageBackground`
   flex: 1;
   justify-content: space-between;
+  background-color: rgba(0,0,0, 0.9);
 `
 
 const LogoImage = styled.ImageBackground`
@@ -32,12 +34,6 @@ export const BronzeImage = styled.Image`
  margin-left: 20px;
  height: 25px;
  width: 50;
-`
-export const VerkkisImage = styled.Image`
- margin-left: 60px;
- margin-top: 5px;
- height: 20px;
- width: 150;
 `
 const Text = styled.Text`
   color: ${props => props.textcolor};
@@ -67,7 +63,7 @@ const Wrapper = styled.View`
   padding-top: 10px;
 `
 
-export default class SideMenu extends Component {
+class SideMenu extends Component {
   render () {
     const { props } = this
     const { navigation } = props
@@ -88,6 +84,9 @@ export default class SideMenu extends Component {
           <Text textcolor={'#ffd700'}>Gold Sponsors</Text>
         </View>
         <View style={{flexDirection: 'row'}}>
+          { this.props.gold.map((i, index) => 
+            <GoldImage key={index} source={{uri: i.image.url}} />
+          )}
         </View>
         <TouchableHighlight underlayColor='rgba(0, 0, 0,0.0)' onPress={() => navigation.navigate('Sponsors')}>
           <AllSponsorsLink textcolor={'white'}>All Sponsors</AllSponsorsLink>
@@ -96,3 +95,9 @@ export default class SideMenu extends Component {
     )
   }
 }
+
+const mapStateToProps = ({sponsors}) => ({
+  gold:  pathOr([], ['data', 'goldSponsors'], sponsors)
+})
+
+export default connect(mapStateToProps)(SideMenu)
