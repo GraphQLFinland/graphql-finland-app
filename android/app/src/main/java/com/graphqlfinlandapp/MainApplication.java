@@ -1,4 +1,4 @@
-package com.reactfinlandapp;
+package com.graphqlfinlandapp;
 
 import android.app.Application;
 
