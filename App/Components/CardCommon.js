@@ -31,7 +31,7 @@ font-family: ${Fonts.type.base};
 `
 export const Description = styled.Text`
   color: black;
-  font-size: ${Fonts.size.small};
+  font-size: ${Fonts.size.medium};
   font-family: ${Fonts.type.base};
 `
 
