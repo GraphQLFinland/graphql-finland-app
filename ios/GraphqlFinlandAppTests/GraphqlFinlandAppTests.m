@@ -16,11 +16,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React Native!"
 
-@interface graphql-finland-appTests : XCTestCase
+@interface GraphqlFinlandAppTests : XCTestCase
 
 @end
 
-@implementation graphql-finland-appTests
+@implementation GraphqlFinlandAppTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {
