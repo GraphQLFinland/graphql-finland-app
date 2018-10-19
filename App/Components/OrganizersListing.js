@@ -45,9 +45,9 @@ export default class OrganizersListing extends React.Component {
     return (
       <Query query={getOrganizers}>
       {({ loading, error, data }) => {
-        if (loading) return 'Loading...';
-        if (error) return `Error! ${error.message}`;
-        console.tron.log(data)
+        // TODO show loading and error component
+        if (loading) return null;
+        if (error) return null;
         const {conference: { organizers }} = data
         return (
         <FlatList
