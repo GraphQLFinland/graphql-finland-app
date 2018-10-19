@@ -2,6 +2,8 @@ import { takeLatest, all } from 'redux-saga/effects'
 import ApolloClient from 'apollo-client-preset'
 import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { persistCache } from 'apollo-cache-persist';
+import { AsyncStorage } from 'react-native';
 
 /* ------------- Types ------------- */
 
