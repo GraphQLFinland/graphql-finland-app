@@ -2,6 +2,8 @@ import { takeLatest, all } from 'redux-saga/effects'
 import ApolloClient from 'apollo-client-preset'
 import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { persistCache } from 'apollo-cache-persist';
+import { AsyncStorage } from 'react-native';
 
 /* ------------- Types ------------- */
 
@@ -15,7 +17,6 @@ import { sponsorsTypes } from '../Redux/SponsorsRedux'
 
 import { startup } from './StartupSagas'
 import { updateSchedule } from './SchedulesSagas'
-import { updateOrganizers } from './OrganizersSagas'
 import { updateSpeakers } from './SpeakersSagas'
 import { updateSponsors } from './SponsorsSagas'
 import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
@@ -24,10 +25,10 @@ import introspectionQueryResultData from './fragmentTypes.json';
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData
 });
-/* ------------- API ------------- */
+const cache = new InMemoryCache({fragmentMatcher})
 const client = new ApolloClient({
   link: new HttpLink({ uri: 'https://api.react-finland.fi/graphql' }),
-  cache: new InMemoryCache({fragmentMatcher})
+  cache
 })
 // The API we use is only used from Sagas, so we create it here and pass along
 // to the sagas which need it.
@@ -38,7 +39,6 @@ export default function * root () {
   yield all([
     takeLatest(StartupTypes.STARTUP, startup),
     takeLatest(ScheduleTypes.SCHEDULE_UPDATE, updateSchedule, client),
-    takeLatest(OrganizersTypes.ORGANIZERS_UPDATE, updateOrganizers, client),
     takeLatest(sponsorsTypes.SPONSORS_UPDATE, updateSponsors, client),
     takeLatest(SpeakersTypes.SPEAKERS_UPDATE, updateSpeakers, client)
   ])
